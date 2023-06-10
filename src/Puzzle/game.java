@@ -2,6 +2,9 @@ package Puzzle;
 
 import java.awt.*;
 import javax.swing.*;
+
+import Kiosk.CSV_manager;
+
 import java.awt.event.*;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -15,7 +18,6 @@ import java.io.Console;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import javax.swing.JOptionPane;
 
 public class game {
 	
@@ -28,6 +30,8 @@ public class game {
 
 class MainFrame extends JFrame implements MouseListener, Runnable {
 	//메인프레임클래스
+	
+	public static boolean record = false;
 	private JLabel lb_title = new JLabel();
 	//게임타이틀표시용라벨
 	private JLabel lb_time = new JLabel();
@@ -41,7 +45,7 @@ class MainFrame extends JFrame implements MouseListener, Runnable {
 	private JButton bt_reset = new JButton("리셋");
 	//게임리셋버튼
 	
-	private JButton bt_record = new JButton("기록");
+	private JButton bt_record = new JButton("종료");
 	//게임 스코어 저장 버튼
 	
 	SimpleDateFormat time_format;
@@ -54,13 +58,18 @@ class MainFrame extends JFrame implements MouseListener, Runnable {
 	Thread th;
 	//스레드
 	ImagePanel sc;
+	CSV_manager CSV = new CSV_manager();
+	private boolean write_token = false;
 	//게임화면을표시할패널클래스접근키
 	MainFrame() {
+		
 		//화면에띄울프레임정의
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		init();
 		start();
 		setTitle("1 to 30 Game");
 		setSize(600, 600);
+		setUndecorated(true);
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		int xpos = (int) (screen.getWidth() / 2 - getWidth() / 2);
 		int ypos = (int) (screen.getHeight() / 2 - getHeight() / 2);
@@ -68,16 +77,7 @@ class MainFrame extends JFrame implements MouseListener, Runnable {
 		setResizable(false);
 		setVisible(true);
 		setBackground(Color.white);
-		addWindowListener(new WindowAdapter() {
-        	public void windowClosing(WindowEvent e)
-        	{
-        		dispose();
-        		new Kiosk.Main_Frame();
-        	}
-		});
-
-		}
-	
+	}
 	public void keyPressed(KeyEvent e){
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			dispose();
@@ -189,8 +189,13 @@ class MainFrame extends JFrame implements MouseListener, Runnable {
 		if ( sc.check > 30){
 
 			sc.ClearTime(lb_time.getText());
-
+			if(write_token == false) 
+			{
+				write_token = true;
+				CSV.CSV_Write("Puzzle", lb_time.getText());
+			}
 			//숫자30까지클릭이끝나면게임클리어메세지띄울준비
+			
 			}
 			}
 	
@@ -199,7 +204,7 @@ class MainFrame extends JFrame implements MouseListener, Runnable {
 			if (e.getSource() == bt_start) {
 			//게임시작버튼
 			if (!time_run && !sc.game_start ) {
-
+			write_token = false;
 			start_time = System.currentTimeMillis();
 			//시작버튼눌렀을시시간값받기
 			sc.rect_select.clear();
@@ -207,14 +212,15 @@ class MainFrame extends JFrame implements MouseListener, Runnable {
 			time_run = true;
 
 			sc.gameStart(true);
-
+			record = false;
 			//게임및시간세팅
 			//System.out.println("start");
 			}
 			} else if (e.getSource() == bt_reset) {
 
 				//게임초기화버튼
-
+				
+				record = false;
 				start_time = 0;
 				lb_time.setText("00:00:00.000");
 				sc.rect_select.clear();
@@ -227,12 +233,8 @@ class MainFrame extends JFrame implements MouseListener, Runnable {
 				}
 			else if (e.getSource() == bt_record) {
 					
-				try {
-		            String content = loadFromFile();
-		            JOptionPane.showMessageDialog(null, content);
-		        } catch (IOException e1) {
-		            e1.printStackTrace();
-		        }
+				dispose();
+        		new Kiosk.Main_Frame();
 			}
 			}
 			
@@ -268,7 +270,8 @@ class MainFrame extends JFrame implements MouseListener, Runnable {
 				
 
 class ImagePanel extends JPanel implements MouseListener {
-
+	
+	
 	//실제게임화면을표시할패널
 
 
@@ -454,6 +457,7 @@ class ImagePanel extends JPanel implements MouseListener {
 		public void ClearTime(String time){
 
 		this.time = time;
+
 
 		}
 		

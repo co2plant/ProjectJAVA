@@ -1,5 +1,8 @@
 package Pingpong;
 import javax.swing.*;
+
+import Kiosk.CSV_manager;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Random;
@@ -22,7 +25,7 @@ public class PingPongGame extends JFrame implements ActionListener {
     private boolean up1Pressed, down1Pressed;
     private int player1Score, player2Score;
     private Random random;
-
+    CSV_manager CSV = new CSV_manager();
     public PingPongGame() {
         setTitle("Ping Pong Game");
         setSize(WIDTH, HEIGHT);
@@ -118,6 +121,7 @@ public class PingPongGame extends JFrame implements ActionListener {
         }
 
         if (player2Score >= 1) {
+        	CSV.CSV_Write("PingPong", Integer.toString(player1Score));
             timer.stop();
             JOptionPane.showMessageDialog(this, "Player Lose!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
             resetGame();

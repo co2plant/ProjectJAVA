@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import javax.swing.JLabel;
+
+import Kiosk.CSV_manager;
 public class Jframe extends JFrame implements KeyListener, Runnable {
 	private int summon_enemy = 0;
 	private int summon_cool;
@@ -51,9 +53,9 @@ public class Jframe extends JFrame implements KeyListener, Runnable {
 	ArrayList bullet_List = new ArrayList();
 	ArrayList Enemy_List = new ArrayList();
 	ArrayList enemy_bullet_List = new ArrayList();
-	
+	CSV_manager CSV;
 	Jframe(){
-		
+	CSV = new CSV_manager();
 	msl.slot = 0;
 	Main_class.exit_switch = false;
 	start();
@@ -269,6 +271,7 @@ public class Jframe extends JFrame implements KeyListener, Runnable {
 				player.money += (bullet_enemy_check.value * 100000);
 				enemy_bullet_List.remove(i);
 				if(player.money <= 0 && is_game_over == false) {
+					CSV.CSV_Write("Shooting", Integer.toString(Score));
 					gos = new game_over_scene();
 					is_game_over = true;
 					Main_class.menu_open = true;

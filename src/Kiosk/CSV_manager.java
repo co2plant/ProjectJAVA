@@ -8,17 +8,14 @@ import java.io.IOException;
 import java.util.*;
 
 public class CSV_manager {
-     	final static String csvSplitBy = ",";
-     	final static String csvFile = "CSV/recode.csv";
-     	public static void main(String[] args)
-    	{
-    		CSV_Reader("Shooting");
-    	}
-     	public static void CSV_Write(String gamename,int Score)
+     	final String csvSplitBy = ",";
+     	final String csvFile = "CSV/record.csv";
+     	final int MAX_TOKEN = 3;
+     	public void CSV_Write(String gamename,String Score)
      	{
      		try (BufferedWriter bw = new BufferedWriter(new FileWriter(csvFile,true))) {
                 // CSV 파일에 쓸 데이터를 준비합니다.
-                String[] data1 = {gamename,Integer.toString(Score)};
+                String[] data1 = {gamename,Score};
                 
                 // CSV 파일에 데이터를 씁니다.
                 bw.write(String.join(csvSplitBy, data1));
@@ -26,20 +23,24 @@ public class CSV_manager {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+     		CSV_Sort();
      	}
 	
-	public static List CSV_Reader(String name)
+	public List CSV_Reader(String name)
 	{
         String line;
         List<String[]> data = new ArrayList<>();
-        
         CSV_Sort();
+        int token = MAX_TOKEN;
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
             while ((line = br.readLine()) != null) {
+            	if(token <= 0)
+            		break;
                 String[] values = line.split(csvSplitBy);
                 if(values[0].equals(name))
                 {
                 	data.add(values);
+                	token--;
                 }
             }
         } catch (IOException e) {
@@ -48,7 +49,7 @@ public class CSV_manager {
         return data;
 	}
 	
-	public static void CSV_Sort()
+	public void CSV_Sort()
 	{
         String line;
         List<String[]> data = new ArrayList<>();
@@ -84,7 +85,7 @@ public class CSV_manager {
                 return compareResult;
             }
             if(row1[0].equals("Puzzle"))
-            	compareResult = Integer.parseInt(row1[1]) - Integer.parseInt(row2[1]);
+            	compareResult = row1[1].compareTo(row2[1]);
             else
             	compareResult = Integer.parseInt(row2[1]) - Integer.parseInt(row1[1]);
             return compareResult;

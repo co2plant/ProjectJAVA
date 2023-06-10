@@ -2,12 +2,19 @@ package Kiosk;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -17,6 +24,8 @@ import javax.swing.JPanel;
 public class Main_Frame extends JFrame implements KeyListener{
 	final int width = 1280; final int height = 720;
 	final int width_center = width/2; final int height_center = height/2;
+	final int Font_Size = 32;
+	final int Puzzle_Font_Size = 20;
 	//이미지 아이콘---------------------------------------------------
 	ImageIcon Box_shooting;
 	ImageIcon Box_pingpong;
@@ -24,6 +33,11 @@ public class Main_Frame extends JFrame implements KeyListener{
 	ImageIcon Box_puzzle;
 	ImageIcon Box_tictactoe;
 	ImageIcon font;
+	ImageIcon best_record;
+	ImageIcon shooting;
+	ImageIcon pingpong;
+	ImageIcon classify;
+	ImageIcon puzzle;
 	//---------------------------------------------------
 	
 	
@@ -38,6 +52,15 @@ public class Main_Frame extends JFrame implements KeyListener{
 	//패널---------------------------------------------------
 	JPanel main = new JPanel();
 	//---------------------------------------------------
+	
+	//CSV 매니저---------------------------------------
+	CSV_manager CSV = new CSV_manager();
+	//-----------------------------------------------------
+	
+	//폰트-----------------------------------------------
+	Font neo;
+	Font Puzzle_neo;
+	//-----------------------------------------------------
 	Toolkit tk = Toolkit.getDefaultToolkit();
 	public Main_Frame()
 	{
@@ -56,14 +79,15 @@ public class Main_Frame extends JFrame implements KeyListener{
     	addKeyListener(this);
     	//---------------
     	
-    	
-    	
+    	neo = loadExternalFont(Font_Size); // 폰트 세팅
+    	Puzzle_neo = loadExternalFont(Puzzle_Font_Size); // 폰트 세팅
     	image_set();//이미지 세팅
 
     	main_panel_set();//패널 세팅
 
     	button_set();//버튼 이벤트리스너 할당
 
+    	draw_record();
     	
         setVisible(true);
 	}
@@ -75,21 +99,32 @@ public class Main_Frame extends JFrame implements KeyListener{
 		JLabel font_text = new JLabel(font);
 		font_text.setBounds(0, height-19, 1052,19);
 		
+		JLabel record = new JLabel(best_record);
+		record.setBounds(width_center-330, 25, 661,76);
+		
     	button_shooting = new JLabel(Box_shooting);
-    	button_shooting.setBounds(width_center-600, height_center+50, 200,200);
+    	button_shooting.setBounds(width_center-600, height_center+120, 200,200);
     	
     	button_puzzle = new JLabel(Box_puzzle);
-    	button_puzzle.setBounds(width_center-350, height_center+50, 200,200);
+    	button_puzzle.setBounds(width_center-350, height_center+120, 200,200);
     	
     	button_pingpong = new JLabel(Box_pingpong);
-    	button_pingpong.setBounds(width_center-100, height_center+50, 200,200);
+    	button_pingpong.setBounds(width_center-100, height_center+120, 200,200);
     	
     	button_tictactoe = new JLabel(Box_tictactoe);
-    	button_tictactoe.setBounds(width_center+150, height_center+50, 200,200);
+    	button_tictactoe.setBounds(width_center+150, height_center+120, 200,200);
     	
     	button_classify = new JLabel(Box_classify);
-    	button_classify.setBounds(width_center+400, height_center+50, 200,200);
+    	button_classify.setBounds(width_center+400, height_center+120, 200,200);
     	
+    	JLabel record_shoot = new JLabel(shooting);
+		record_shoot.setBounds(width_center-425, 120, 200,300);
+    	JLabel record_puzzle = new JLabel(puzzle);
+		record_puzzle.setBounds(record_shoot.getLocation().x+200, 120, 200,300);
+		JLabel record_ping = new JLabel(pingpong);
+		record_ping.setBounds(record_puzzle.getLocation().x+200, 120, 200,300);
+		JLabel record_classify = new JLabel(classify);
+		record_classify.setBounds(record_ping.getLocation().x+200, 120, 200,300);
     	
     	main.add(button_shooting);
     	main.add(button_puzzle);
@@ -97,6 +132,11 @@ public class Main_Frame extends JFrame implements KeyListener{
     	main.add(button_tictactoe);
     	main.add(button_classify);
     	main.add(font_text);
+    	main.add(record);
+    	main.add(record_puzzle);
+    	main.add(record_ping);
+    	main.add(record_shoot);
+    	main.add(record_classify);
     	add(main);
 	}
 
@@ -110,6 +150,76 @@ public class Main_Frame extends JFrame implements KeyListener{
 		Box_puzzle = new ImageIcon("Image/box_puzzle.png");
 		Box_tictactoe = new ImageIcon("Image/box_tictactoe.png");
 		font = new ImageIcon("Image/font.png");
+		best_record = new ImageIcon("Image/BEST_RECORD.png");
+		shooting = new ImageIcon("Image/record_shooting.png");
+		pingpong = new ImageIcon("Image/record_pingpong.png");
+		classify = new ImageIcon("Image/record_classify.png");
+		puzzle = new ImageIcon("Image/record_puzzle.png");
+	}
+	
+	private void draw_record()
+	{
+		JLabel[] score = new JLabel[3];
+		String[] score_string = read_record("Shooting");
+		for(int i=0;i<3;i++)
+		{
+			score[i] = new JLabel(score_string[i]);
+			score[i].setFont(neo);
+			score[i].setBounds(310, 120+(i*70),100,100);
+			score[i].setForeground(Color.WHITE);
+			main.add(score[i]);
+			main.setComponentZOrder(score[i], 0);
+		}
+		
+
+		score_string = read_record("Puzzle");
+		for(int i=0;i<3;i++)
+		{
+			score[i] = new JLabel(score_string[i]);
+			score[i].setFont(Puzzle_neo);
+			score[i].setBounds(480, 120+(i*70),1000,100);
+			score[i].setForeground(Color.WHITE);
+			main.add(score[i]);
+			main.setComponentZOrder(score[i], 0);
+		}
+
+		score_string = read_record("PingPong");
+		for(int i=0;i<3;i++)
+		{
+			score[i] = new JLabel(score_string[i]);
+			score[i].setFont(neo);
+			score[i].setBounds(725, 120+(i*70),100,100);
+			score[i].setForeground(Color.WHITE);
+			main.add(score[i]);
+			main.setComponentZOrder(score[i], 0);
+		}
+
+		score_string = read_record("Classify");
+		for(int i=0;i<3;i++)
+		{
+			score[i] = new JLabel(score_string[i]);
+			score[i].setFont(neo);
+			score[i].setBounds(910, 120+(i*70),100,100);
+			score[i].setForeground(Color.WHITE);
+			main.add(score[i]);
+			main.setComponentZOrder(score[i], 0);
+		}
+	}
+	
+	private String[] read_record(String name)
+	{
+		String[] record_string = new String[3];
+		List<String[]> record_list = new ArrayList<>();
+		record_list = CSV.CSV_Reader(name);
+		
+		for(int i=0;i<record_list.size();i++)
+		{
+			record_string[i] = record_list.get(i)[1];
+		}
+		for(int i = record_list.size();i<3;i++)
+			record_string[i] = "//";
+			
+		return record_string;
 	}
 	
 	private void button_set()
@@ -198,16 +308,27 @@ public class Main_Frame extends JFrame implements KeyListener{
 		
 	}
 	
-	public void keyPressed(KeyEvent e){
+	private Font loadExternalFont(int Font_Size) 
+	{
+        try {
+            Font font = Font.createFont(Font.TRUETYPE_FONT, new File("Font/neodgm.ttf"));
+            font = font.deriveFont(Font.PLAIN, Font_Size);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(font);
+            return font;
+        } catch (FontFormatException | IOException e) {
+            // 폰트 로딩에 실패했을 경우 기본 폰트를 반환하거나 예외 처리를 수행할 수 있습니다.
+            return new Font("Arial", Font.PLAIN, Font_Size);
+        }
+    }
+	
+	public void keyPressed(KeyEvent e)
+	{
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			System.exit(0);
         }
 	}
 
-	public static void main(String[] args)
-	{
-		new Main_Frame();
-	}
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {}
@@ -215,4 +336,8 @@ public class Main_Frame extends JFrame implements KeyListener{
 	@Override
 	public void keyTyped(KeyEvent arg0) {}
 
+	public static void main(String[] args)
+	{
+		new Main_Frame();
+	}
 }

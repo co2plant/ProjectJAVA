@@ -1,6 +1,9 @@
 package Classify.src;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import Kiosk.CSV_manager;
+
 import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -27,7 +30,7 @@ public class ClassificationGame extends JPanel implements KeyListener, Runnable 
     private JFrame frame;
     static int score = 0;
     static int timeLeft = 60; // 게임 시간 (초)
-
+    CSV_manager CSV = new CSV_manager();
     public ClassificationGame() {
         setPreferredSize(new Dimension(screenWidth, screenHeight));
         setBackground(Color.WHITE);
@@ -154,7 +157,7 @@ public class ClassificationGame extends JPanel implements KeyListener, Runnable 
             // Repaint the panel to update the time left
             repaint();
         }
-
+        CSV.CSV_Write("Classify",Integer.toString(score));
         // Game over logic here
         System.out.println("Game Over");
     }
