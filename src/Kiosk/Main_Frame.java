@@ -179,6 +179,22 @@ public class Main_Frame extends JFrame implements KeyListener{
 			public void mouseClicked(MouseEvent e) {}
         });
 		
+		button_classify.addMouseListener(new MouseListener() {
+			@Override
+            public void mousePressed(MouseEvent e) {
+				new Classify.src.ClassificationGame();
+				dispose();
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			@Override
+			public void mouseExited(MouseEvent e) {}
+			@Override
+			public void mouseClicked(MouseEvent e) {}
+        });
+		
 		
 	}
 	

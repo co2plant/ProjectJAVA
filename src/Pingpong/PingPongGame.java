@@ -117,11 +117,7 @@ public class PingPongGame extends JFrame implements ActionListener {
             }
         }
 
-        if (player1Score >= 5) {
-            timer.stop();
-            JOptionPane.showMessageDialog(this, "Player Win!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
-            resetGame();
-        } else if (player2Score >= 5) {
+        if (player2Score >= 1) {
             timer.stop();
             JOptionPane.showMessageDialog(this, "Player Lose!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
             resetGame();
