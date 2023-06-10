@@ -9,6 +9,8 @@ public class Jframe extends JFrame implements KeyListener, Runnable {
 	private int summon_cool;
 	final private int select_cool = 5;
 	private float bullet_time;
+	private int Score = 0;
+	private int Score_point = 0;
 	final private int move_speed = 10;
 	private int bullet_w,bullet_h,enemy_w,enemy_h;
 	private boolean is_game_over = false;
@@ -140,9 +142,17 @@ public class Jframe extends JFrame implements KeyListener, Runnable {
 	if(game_over_cool > 0)
 		game_over_cool--;
 	Thread.sleep(20); 
+	if(Main_class.menu_open == false)
+		Score_point++;
+	if(Score_point >= 50)
+	{
+		Score_point = 0;
+		Score++;
+	}
 	}
 	}catch (Exception e){}
 	}
+
 	
 	//�솮占�
 	public void paint(Graphics g){
@@ -179,16 +189,16 @@ public class Jframe extends JFrame implements KeyListener, Runnable {
 	
 	public void Draw_text() {
 			buffg.setFont(font);
-		buffg.drawString(Integer.toString(player.money) + " Life Point", 0, 30);
+			buffg.drawString(Integer.toString(player.money) + " Life Point", 0, 30);
+			buffg.drawString(Integer.toString(Score) + " Score", 0, 60);
 	}
 	
 	public void Draw_test(){ 
 	buffg.clearRect(0, 0, width, height);
 	if(Main_class.scene_number == Main_class.scene_main) {
-		buffg.drawImage(main_logo,320,50, this);
-		buffg.drawImage(guide,270,450, this);
+		buffg.drawImage(guide,410,450, this);
 	for(int i =0;i<2;i++)
-		buffg.drawImage(main_text[i],i*530+200,i==msl.slot?550:650, this);
+		buffg.drawImage(main_text[i],i*810+200,i==msl.slot?550:650, this);
 	}
 	else if (Main_class.scene_number == Main_class.scene_game)
 		buffg.drawImage(character,player.x,player.y, this);
@@ -198,7 +208,7 @@ public class Jframe extends JFrame implements KeyListener, Runnable {
 	public void Draw_menu() {
 		buffg.drawImage(gray,0,0, this);
 		for(int i=0;i<2;i++) {
-		buffg.drawImage(menu_text[i],i == menu.slot?600:700,i==0?500:600, this);
+		buffg.drawImage(menu_text[i],i == menu.slot?900:1000,i==0?500:600, this);
 		}
 	}
 
@@ -308,6 +318,8 @@ public class Jframe extends JFrame implements KeyListener, Runnable {
 			if(msl.slot == 0) {
 				player = new Player();
 				menu = new Menu_select();
+				Score = 0;
+				Score_point = 0;
 			}
 		}
 	break;

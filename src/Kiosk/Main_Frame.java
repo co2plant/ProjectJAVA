@@ -1,8 +1,11 @@
 package Kiosk;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -11,10 +14,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class Main_Frame extends JFrame{
+public class Main_Frame extends JFrame implements KeyListener{
 	final int width = 1280; final int height = 720;
 	final int width_center = width/2; final int height_center = height/2;
-	//¿ÃπÃ¡ˆ---------------------------------------------------
+	//Ïù¥ÎØ∏ÏßÄ ÏïÑÏù¥ÏΩò---------------------------------------------------
 	ImageIcon Box_shooting;
 	ImageIcon Box_pingpong;
 	ImageIcon Box_classify;
@@ -24,7 +27,7 @@ public class Main_Frame extends JFrame{
 	//---------------------------------------------------
 	
 	
-	//¿ÃπÃ¡ˆ πˆ∆∞---------------------------------------------------
+	//Ïù¥ÎØ∏ÏßÄ Î≤ÑÌäº---------------------------------------------------
 	JLabel button_shooting;
 	JLabel button_pingpong;
 	JLabel button_classify;
@@ -32,38 +35,34 @@ public class Main_Frame extends JFrame{
 	JLabel button_tictactoe;
 	//---------------------------------------------------
 	
-	//∆–≥Œ---------------------------------------------------
+	//Ìå®ÎÑê---------------------------------------------------
 	JPanel main = new JPanel();
-	//
-	
-	//¥Ÿ∏• «¡∑Œ¡ß∆Æ ≈¨∑°Ω∫---------------------------------------------------
-	Shooting.Main_class Shooting;
-
 	//---------------------------------------------------
 	Toolkit tk = Toolkit.getDefaultToolkit();
 	public Main_Frame()
 	{
 		
-		//¿©µµøÏ «¡∑π¿” º≥¡§
+		//ÌîÑÎ†àÏûÑ ÏÑ∏ÌåÖ
 		setSize(width, height);
         setTitle("Kiosk");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Dimension screen = tk.getScreenSize();
     	int f_xpos = (int)(screen.getWidth() / 2 - width / 2);
     	int f_ypos = (int)(screen.getHeight() / 2 - height / 2);
-    	setUndecorated(true);//≈∏¿Ã∆≤πŸ æ¯æ÷¥¬∞≈
-    	setLocation(f_xpos, f_ypos);//¿©µµøÏ√¢ ¡ﬂæ”ø° ª˝º∫
-    	setResizable(false);//ªÁ¿Ã¡Ó ¡∂¿˝ ∫“∞°¥…
+    	setUndecorated(true);
+    	setLocation(f_xpos, f_ypos);
+    	setResizable(false);
+    	setBackground(Color.white);
+    	addKeyListener(this);
     	//---------------
     	
     	
     	
-    	image_set();
-    	//∆–≥Œ ºº∆√
-    	main_panel_set();
+    	image_set();//Ïù¥ÎØ∏ÏßÄ ÏÑ∏ÌåÖ
 
-    	//------
-    	button_set();
+    	main_panel_set();//Ìå®ÎÑê ÏÑ∏ÌåÖ
+
+    	button_set();//Î≤ÑÌäº Ïù¥Î≤§Ìä∏Î¶¨Ïä§ÎÑà Ìï†Îãπ
 
     	
         setVisible(true);
@@ -74,7 +73,7 @@ public class Main_Frame extends JFrame{
 		main.setVisible(true);
 		main.setLayout(null);
 		JLabel font_text = new JLabel(font);
-		font_text.setBounds(0, height-57, 1199,57);
+		font_text.setBounds(0, height-19, 1052,19);
 		
     	button_shooting = new JLabel(Box_shooting);
     	button_shooting.setBounds(width_center-600, height_center+50, 200,200);
@@ -116,9 +115,10 @@ public class Main_Frame extends JFrame{
 	private void button_set()
 	{
 		button_shooting.addMouseListener(new MouseListener() {
+
 			@Override
             public void mousePressed(MouseEvent e) {
-				Shooting = new Shooting.Main_class();
+				new Shooting.Main_class();
 				dispose();
 			}
 			@Override
@@ -130,11 +130,73 @@ public class Main_Frame extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {}
         });
+		
+		button_pingpong.addMouseListener(new MouseListener() {
+			@Override
+            public void mousePressed(MouseEvent e) {
+				new Pingpong.PingPongGame();
+				dispose();
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			@Override
+			public void mouseExited(MouseEvent e) {}
+			@Override
+			public void mouseClicked(MouseEvent e) {}
+        });
+	
+		button_puzzle.addMouseListener(new MouseListener() {
+			@Override
+            public void mousePressed(MouseEvent e) {
+				new Puzzle.game();
+				dispose();
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			@Override
+			public void mouseExited(MouseEvent e) {}
+			@Override
+			public void mouseClicked(MouseEvent e) {}
+        });
+		
+		button_tictactoe.addMouseListener(new MouseListener() {
+			@Override
+            public void mousePressed(MouseEvent e) {
+				new tictactoe.TicTacToeGame();
+				dispose();
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			@Override
+			public void mouseExited(MouseEvent e) {}
+			@Override
+			public void mouseClicked(MouseEvent e) {}
+        });
+		
+		
+	}
+	
+	public void keyPressed(KeyEvent e){
+		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			System.exit(0);
+        }
 	}
 
 	public static void main(String[] args)
 	{
 		new Main_Frame();
 	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {}
 
 }
