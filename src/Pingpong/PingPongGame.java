@@ -2,6 +2,7 @@ package Pingpong;
 import javax.swing.*;
 
 import Kiosk.CSV_manager;
+import Kiosk.GameOver;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -17,6 +18,7 @@ public class PingPongGame extends JFrame implements ActionListener {
     private static final int PADDLE_SPEED = 5;
     private static final int CPU_MOVE_INTERVAL = 20;
 
+    private boolean already_exit = false;
     private JPanel gamePanel;
     private Timer timer;
     private int ballX, ballY;
@@ -82,7 +84,8 @@ public class PingPongGame extends JFrame implements ActionListener {
                 }
                 
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                	new Kiosk.GameOver();
+                	already_exit = true;
+                	new Kiosk.Main_Frame();
                     dispose();
                 }
             }
@@ -104,6 +107,8 @@ public class PingPongGame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+    	if(already_exit == false) {
+    	
         if (ballX >= WIDTH - BALL_SIZE - PADDLE_WIDTH * 2) {
             if (ballY + BALL_SIZE >= paddle2Y && ballY <= paddle2Y + PADDLE_HEIGHT) {
                 ballXSpeed = -ballXSpeed;
@@ -122,9 +127,10 @@ public class PingPongGame extends JFrame implements ActionListener {
 
         if (player2Score >= 1) {
         	CSV.CSV_Write("PingPong", Integer.toString(player1Score));
-            timer.stop();
-            JOptionPane.showMessageDialog(this, "Player Lose!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
-            resetGame();
+        	player2Score = 0;
+        	already_exit = true;
+            dispose();
+            new GameOver(Integer.toString(player1Score));
         }
 
         if (ballY >= HEIGHT - BALL_SIZE || ballY <= 0) {
@@ -140,8 +146,9 @@ public class PingPongGame extends JFrame implements ActionListener {
 
         ballX += ballXSpeed;
         ballY += ballYSpeed;
-
+        
         gamePanel.repaint();
+    	}
     }
 
     private void resetBall() {
@@ -162,6 +169,8 @@ public class PingPongGame extends JFrame implements ActionListener {
         Timer cpuTimer = new Timer(CPU_MOVE_INTERVAL, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	if(already_exit)
+            		return;
                 // CPU logic to move the paddle automatically
                 int paddle2Center = paddle2Y + PADDLE_HEIGHT / 2;
                 int ballCenter = ballY + BALL_SIZE / 2;
@@ -171,10 +180,11 @@ public class PingPongGame extends JFrame implements ActionListener {
                 } else if (paddle2Center > ballCenter && paddle2Y > 0) {
                     paddle2Y -= PADDLE_SPEED;
                 }
+                
             }
         });
-
-        cpuTimer.start();
+        if(already_exit == false)
+        	cpuTimer.start();
     }
 
 

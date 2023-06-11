@@ -232,7 +232,7 @@ class MainFrame extends JFrame implements MouseListener, Runnable {
 				//System.out.println("reset");
 				}
 			else if (e.getSource() == bt_record) {
-				new Kiosk.GameOver();
+				new Kiosk.Main_Frame();
 		        dispose();
 			}
 			}

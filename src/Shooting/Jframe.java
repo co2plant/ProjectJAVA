@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 
 import Kiosk.CSV_manager;
+import Kiosk.GameOver;
 public class Jframe extends JFrame implements KeyListener, Runnable {
 	private int summon_enemy = 0;
 	private int summon_cool;
@@ -178,8 +179,6 @@ public class Jframe extends JFrame implements KeyListener, Runnable {
 		
 		if(Main_class.scene_number == Main_class.scene_game && is_game_over == false)
 			Draw_text();
-		if(is_game_over == true)
-			Draw_over();
 		g.drawImage(buffImage, 0, 0, this); 
 		
 		}
@@ -272,7 +271,8 @@ public class Jframe extends JFrame implements KeyListener, Runnable {
 				enemy_bullet_List.remove(i);
 				if(player.money <= 0 && is_game_over == false) {
 					CSV.CSV_Write("Shooting", Integer.toString(Score));
-					gos = new game_over_scene();
+					dispose();
+					new GameOver(Integer.toString(Score));
 					is_game_over = true;
 					Main_class.menu_open = true;
 					game_over_cool = 30;

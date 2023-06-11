@@ -3,6 +3,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import Kiosk.CSV_manager;
+import Kiosk.Main_Frame;
 
 import javax.swing.JButton;
 import java.awt.Color;
@@ -16,21 +17,21 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class ClassificationGame extends JPanel implements KeyListener, Runnable {
-    static Queue<Integer> queue = new LinkedList<Integer>(); // 0 RED 1 BLUE
+     Queue<Integer> queue = new LinkedList<Integer>(); // 0 RED 1 BLUE
 
     Toolkit toolkit = Toolkit.getDefaultToolkit();
     Image bulletImage = toolkit.getImage("src/Classify/img/LEFT.png");
     Image scopeImage = toolkit.getImage("src/Classify/img/RIGHT.png");
     Image gameoverImage = toolkit.getImage("src/Classify/img/GAMEOVER.png");
 
-    private static JButton leftButton;
-    private static JButton rightButton;
-
-    final static int screenWidth = 1280;
-    final static int screenHeight = 720;
+    private JButton leftButton;
+    private JButton rightButton;
+    private boolean already_exit = false;
+    final int screenWidth = 1280;
+    final int screenHeight = 720;
     private JFrame frame;
-    static int score = 0;
-    static int timeLeft = 30; // 게임 시간 (초)
+     int score = 0;
+    int timeLeft = 30; // 게임 시간 (초)
     CSV_manager CSV = new CSV_manager();
     public ClassificationGame() {
         setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -128,8 +129,9 @@ public class ClassificationGame extends JPanel implements KeyListener, Runnable 
         }
         
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-        	new Kiosk.GameOver();
-            frame.dispose();
+        	already_exit = true;
+        	frame.dispose();
+        	new Main_Frame();
         }
         requestFocus(); // 키 입력을 계속 받도록 포커스 요청
     }
@@ -157,14 +159,17 @@ public class ClassificationGame extends JPanel implements KeyListener, Runnable 
 
             // Decrease the time left
             timeLeft--;
-
+            if(already_exit)
+            	return;
             // Repaint the panel to update the time left
             repaint();
         }
+        if(already_exit == false) {
         CSV.CSV_Write("Classify",Integer.toString(score));
         // Game over logic here
         System.out.println("Game Over");
-        new Kiosk.GameOver();
         frame.dispose();
+        new Kiosk.GameOver(Integer.toString(score));
+        }
     }
 }

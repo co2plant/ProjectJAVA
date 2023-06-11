@@ -25,13 +25,15 @@ public class GameOver extends JFrame implements KeyListener{
 	
 	final int width = 1280; final int height = 720;
 	final int width_center = width/2; final int height_center = height/2;
-	
+	final int Font_Size = 32;
 	public JFrame frame;
 	
+	Font neo;
 	ImageIcon GameOver = new ImageIcon("Image/GAMEOVER.png");
 	
 	Toolkit tk = Toolkit.getDefaultToolkit();
-	public GameOver() {
+	public GameOver(String score) {
+		neo = loadExternalFont(Font_Size);
 		frame = new JFrame("GameOver");
 		frame.setSize(width, height);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -45,6 +47,10 @@ public class GameOver extends JFrame implements KeyListener{
     	frame.addKeyListener(this);
     	frame.pack();
         frame.setLocationRelativeTo(null);
+        JLabel record = new JLabel("Score : "+score);
+		record.setBounds(width_center-75, 100, 1000,1000);
+		record.setFont(neo);
+		frame.add(record);
         frame.setVisible(true);
         requestFocus();
 	}
@@ -65,4 +71,17 @@ public class GameOver extends JFrame implements KeyListener{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	private Font loadExternalFont(int Font_Size) 
+	{
+        try {
+            Font font = Font.createFont(Font.TRUETYPE_FONT, new File("Font/neodgm.ttf"));
+            font = font.deriveFont(Font.PLAIN, Font_Size);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(font);
+            return font;
+        } catch (FontFormatException | IOException e) {
+            return new Font("Arial", Font.PLAIN, Font_Size);
+        }
+    }
 }

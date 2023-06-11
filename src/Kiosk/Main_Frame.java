@@ -319,7 +319,6 @@ public class Main_Frame extends JFrame implements KeyListener{
             ge.registerFont(font);
             return font;
         } catch (FontFormatException | IOException e) {
-            // 폰트 로딩에 실패했을 경우 기본 폰트를 반환하거나 예외 처리를 수행할 수 있습니다.
             return new Font("Arial", Font.PLAIN, Font_Size);
         }
     }
