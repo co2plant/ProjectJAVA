@@ -75,9 +75,9 @@ public class PingPongGame extends JFrame implements ActionListener {
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_W) {
+                if (e.getKeyCode() == KeyEvent.VK_UP) {
                     up1Pressed = true;
-                } else if (e.getKeyCode() == KeyEvent.VK_S) {
+                } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                     down1Pressed = true;
                 }
                 
@@ -89,9 +89,9 @@ public class PingPongGame extends JFrame implements ActionListener {
 
             @Override
             public void keyReleased(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_W) {
+                if (e.getKeyCode() == KeyEvent.VK_UP) {
                     up1Pressed = false;
-                } else if (e.getKeyCode() == KeyEvent.VK_S) {
+                } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                     down1Pressed = false;
                 }
             }

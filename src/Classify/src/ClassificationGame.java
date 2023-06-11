@@ -46,15 +46,17 @@ public class ClassificationGame extends JPanel implements KeyListener, Runnable 
         frame.setResizable(false);
 
         // button initialize
+        /*
         leftButton = new JButton("RED");
         rightButton = new JButton("BLUE");
 
         leftButton.setBounds(50, screenHeight - 150, 100, 100);
         rightButton.setBounds(screenWidth - 150, screenHeight - 150, 100, 100);
-        frame.setUndecorated(true);
+        
         frame.getContentPane().add(leftButton);
         frame.getContentPane().add(rightButton);
-        
+        */
+        frame.setUndecorated(true);
         frame.getContentPane().add(this);
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -160,5 +162,7 @@ public class ClassificationGame extends JPanel implements KeyListener, Runnable 
         CSV.CSV_Write("Classify",Integer.toString(score));
         // Game over logic here
         System.out.println("Game Over");
+        new Kiosk.Main_Frame();
+        frame.dispose();
     }
 }
