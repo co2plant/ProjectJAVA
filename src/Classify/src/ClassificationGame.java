@@ -19,8 +19,8 @@ public class ClassificationGame extends JPanel implements KeyListener, Runnable 
     static Queue<Integer> queue = new LinkedList<Integer>(); // 0 RED 1 BLUE
 
     Toolkit toolkit = Toolkit.getDefaultToolkit();
-    Image bulletImage = toolkit.getImage("src/Classify/img/Bullet.png");
-    Image scopeImage = toolkit.getImage("src/Classify/img/Scope.png");
+    Image bulletImage = toolkit.getImage("src/Classify/img/LEFT.png");
+    Image scopeImage = toolkit.getImage("src/Classify/img/RIGHT.png");
 
     private static JButton leftButton;
     private static JButton rightButton;
