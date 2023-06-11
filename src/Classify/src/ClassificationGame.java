@@ -21,6 +21,7 @@ public class ClassificationGame extends JPanel implements KeyListener, Runnable 
     Toolkit toolkit = Toolkit.getDefaultToolkit();
     Image bulletImage = toolkit.getImage("src/Classify/img/LEFT.png");
     Image scopeImage = toolkit.getImage("src/Classify/img/RIGHT.png");
+    Image gameoverImage = toolkit.getImage("src/Classify/img/GAMEOVER.png");
 
     private static JButton leftButton;
     private static JButton rightButton;
@@ -29,7 +30,7 @@ public class ClassificationGame extends JPanel implements KeyListener, Runnable 
     final static int screenHeight = 720;
     private JFrame frame;
     static int score = 0;
-    static int timeLeft = 60; // 게임 시간 (초)
+    static int timeLeft = 30; // 게임 시간 (초)
     CSV_manager CSV = new CSV_manager();
     public ClassificationGame() {
         setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -92,6 +93,7 @@ public class ClassificationGame extends JPanel implements KeyListener, Runnable 
             i++;
         }
     }
+    
 
     private void discardCard(boolean isLEFT) {
         int tmp = queue.poll();
@@ -126,7 +128,7 @@ public class ClassificationGame extends JPanel implements KeyListener, Runnable 
         }
         
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-        	new Kiosk.Main_Frame();
+        	new Kiosk.GameOver();
             frame.dispose();
         }
         requestFocus(); // 키 입력을 계속 받도록 포커스 요청
@@ -162,7 +164,7 @@ public class ClassificationGame extends JPanel implements KeyListener, Runnable 
         CSV.CSV_Write("Classify",Integer.toString(score));
         // Game over logic here
         System.out.println("Game Over");
-        new Kiosk.Main_Frame();
+        new Kiosk.GameOver();
         frame.dispose();
     }
 }

@@ -82,7 +82,7 @@ public class PingPongGame extends JFrame implements ActionListener {
                 }
                 
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                	new Kiosk.Main_Frame();
+                	new Kiosk.GameOver();
                     dispose();
                 }
             }

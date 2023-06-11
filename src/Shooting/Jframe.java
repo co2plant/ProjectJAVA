@@ -87,7 +87,7 @@ public class Jframe extends JFrame implements KeyListener, Runnable {
 		main_logo = tk.getImage("src/Shooting/Image/main_logo.png"); 
 		guide = tk.getImage("src/Shooting/Image/guide.png"); 
 		neo_enemy = tk.getImage("src/Shooting/Image/neo_enemy.png"); 
-		game_over = tk.getImage("src/Shooting/Image/game_over.png"); 
+		game_over = tk.getImage("src/Shooting/Image/XGAMEOVER.png"); 
 		bullet_w=21;bullet_h = 37;
 		enemy_w=75;enemy_h=75;
 		font = new Font("SanSerif",font.BOLD,30);

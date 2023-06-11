@@ -38,6 +38,7 @@ public class Main_Frame extends JFrame implements KeyListener{
 	ImageIcon pingpong;
 	ImageIcon classify;
 	ImageIcon puzzle;
+	ImageIcon GameOver;
 	//---------------------------------------------------
 	
 	
@@ -155,6 +156,7 @@ public class Main_Frame extends JFrame implements KeyListener{
 		pingpong = new ImageIcon("Image/record_pingpong.png");
 		classify = new ImageIcon("Image/record_classify.png");
 		puzzle = new ImageIcon("Image/record_puzzle.png");
+		GameOver = new ImageIcon("Image/GAMEOVER.png");
 	}
 	
 	private void draw_record()
