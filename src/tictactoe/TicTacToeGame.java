@@ -1,6 +1,7 @@
 package tictactoe;
 import javax.swing.*;
 
+import Kiosk.CSV_manager;
 import Kiosk.GameOver;
 
 import java.awt.*;
@@ -28,7 +29,7 @@ public class TicTacToeGame extends JFrame implements ActionListener{
     private final int width = 900;
     private final int height = 700;
     Toolkit tk = Toolkit.getDefaultToolkit();
-
+    CSV_manager CSV = new CSV_manager();
     private Random random;  // 추가(수정) 코드
  
     public TicTacToeGame() {
@@ -127,17 +128,11 @@ public class TicTacToeGame extends JFrame implements ActionListener{
                 gameCount++;
                 updateScoreLabel();
 
-                if (gameCount == 3) {
-                    String winner;
-                    if (scoreO > scoreX) {
-                        winner = "Player O";
-                    } else if (scoreX > scoreO) {
-                        winner = "Player X";
-                    } else {
-                        winner = "No winner";
-                    }
+                    if (scoreX >= 1) {
+                    CSV.CSV_Write("TicTacToe", Integer.toString(scoreO));
                     dispose();
-					new GameOver(winner+" HAS WON!!");
+					new GameOver("Score : "+scoreO);
+					return;
                 }
 
                 resetGame();
@@ -178,16 +173,11 @@ public class TicTacToeGame extends JFrame implements ActionListener{
                     gameCount++;
                     updateScoreLabel();
 
-                    if (gameCount == 3) {
-                        String winner;
-                        if (scoreO > scoreX) {
-                            winner = "Player O";
-                        } else if (scoreX > scoreO) {
-                            winner = "Player X";
-                        } else {
-                            winner = "No winner";
-                        }
-                        resultLabel.setText("The final Winner: " + winner);
+                    if (scoreX >= 1) {
+                        CSV.CSV_Write("TicTacToe", Integer.toString(scoreO));
+                        dispose();
+    					new GameOver("Score : "+scoreO);
+    					return;
                     }
 
                     resetGame();
@@ -257,12 +247,6 @@ public class TicTacToeGame extends JFrame implements ActionListener{
             }
         }
         currentPlayer = 'O';
-        if (gameCount == 3) {
-            scoreO = 0;
-            scoreX = 0;
-            gameCount = 0;
-            updateScoreLabel();
-        }
         turnLabel.setText("Player " + currentPlayer + "'s turn");
     }
 

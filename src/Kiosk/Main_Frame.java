@@ -38,6 +38,7 @@ public class Main_Frame extends JFrame implements KeyListener{
 	ImageIcon pingpong;
 	ImageIcon classify;
 	ImageIcon puzzle;
+	ImageIcon tictactoe;
 	ImageIcon GameOver;
 	//---------------------------------------------------
 	
@@ -103,6 +104,7 @@ public class Main_Frame extends JFrame implements KeyListener{
 		JLabel record = new JLabel(best_record);
 		record.setBounds(width_center-330, 25, 661,76);
 		
+		//버튼 이미지 셋업--------------------------
     	button_shooting = new JLabel(Box_shooting);
     	button_shooting.setBounds(width_center-600, height_center+120, 200,200);
     	
@@ -117,16 +119,21 @@ public class Main_Frame extends JFrame implements KeyListener{
     	
     	button_classify = new JLabel(Box_classify);
     	button_classify.setBounds(width_center+400, height_center+120, 200,200);
+    	//--------------------------------------
     	
+    	//베스트 스코어 프레임 셋업-------------------
     	JLabel record_shoot = new JLabel(shooting);
-		record_shoot.setBounds(width_center-425, 120, 200,300);
+		record_shoot.setBounds(width_center-510, 120, 200,300);
     	JLabel record_puzzle = new JLabel(puzzle);
 		record_puzzle.setBounds(record_shoot.getLocation().x+200, 120, 200,300);
 		JLabel record_ping = new JLabel(pingpong);
 		record_ping.setBounds(record_puzzle.getLocation().x+200, 120, 200,300);
+		JLabel record_tictactoe = new JLabel(tictactoe);
+		record_tictactoe.setBounds(record_ping.getLocation().x+200, 120, 200,300);
 		JLabel record_classify = new JLabel(classify);
-		record_classify.setBounds(record_ping.getLocation().x+200, 120, 200,300);
-    	
+		record_classify.setBounds(record_tictactoe.getLocation().x+200, 120, 200,300);
+		//--------------------------------------
+		
     	main.add(button_shooting);
     	main.add(button_puzzle);
     	main.add(button_pingpong);
@@ -138,6 +145,7 @@ public class Main_Frame extends JFrame implements KeyListener{
     	main.add(record_ping);
     	main.add(record_shoot);
     	main.add(record_classify);
+    	main.add(record_tictactoe);
     	add(main);
 	}
 
@@ -156,6 +164,7 @@ public class Main_Frame extends JFrame implements KeyListener{
 		pingpong = new ImageIcon("Image/record_pingpong.png");
 		classify = new ImageIcon("Image/record_classify.png");
 		puzzle = new ImageIcon("Image/record_puzzle.png");
+		tictactoe = new ImageIcon("Image/record_tic.png");
 		GameOver = new ImageIcon("Image/GAMEOVER.png");
 	}
 	
@@ -167,7 +176,7 @@ public class Main_Frame extends JFrame implements KeyListener{
 		{
 			score[i] = new JLabel(score_string[i]);
 			score[i].setFont(neo);
-			score[i].setBounds(310, 120+(i*70),100,100);
+			score[i].setBounds(240, 120+(i*70),100,100);
 			score[i].setForeground(Color.WHITE);
 			main.add(score[i]);
 			main.setComponentZOrder(score[i], 0);
@@ -179,7 +188,7 @@ public class Main_Frame extends JFrame implements KeyListener{
 		{
 			score[i] = new JLabel(score_string[i]);
 			score[i].setFont(Puzzle_neo);
-			score[i].setBounds(480, 120+(i*70),1000,100);
+			score[i].setBounds(390, 120+(i*70),1000,100);
 			score[i].setForeground(Color.WHITE);
 			main.add(score[i]);
 			main.setComponentZOrder(score[i], 0);
@@ -190,7 +199,17 @@ public class Main_Frame extends JFrame implements KeyListener{
 		{
 			score[i] = new JLabel(score_string[i]);
 			score[i].setFont(neo);
-			score[i].setBounds(725, 120+(i*70),100,100);
+			score[i].setBounds(650, 120+(i*70),100,100);
+			score[i].setForeground(Color.WHITE);
+			main.add(score[i]);
+			main.setComponentZOrder(score[i], 0);
+		}
+		score_string = read_record("TicTacToe");
+		for(int i=0;i<3;i++)
+		{
+			score[i] = new JLabel(score_string[i]);
+			score[i].setFont(neo);
+			score[i].setBounds(850, 120+(i*70),100,100);
 			score[i].setForeground(Color.WHITE);
 			main.add(score[i]);
 			main.setComponentZOrder(score[i], 0);
@@ -201,7 +220,7 @@ public class Main_Frame extends JFrame implements KeyListener{
 		{
 			score[i] = new JLabel(score_string[i]);
 			score[i].setFont(neo);
-			score[i].setBounds(910, 120+(i*70),100,100);
+			score[i].setBounds(1025, 120+(i*70),100,100);
 			score[i].setForeground(Color.WHITE);
 			main.add(score[i]);
 			main.setComponentZOrder(score[i], 0);
