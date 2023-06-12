@@ -3,7 +3,7 @@ public class Enemy {
 	public int x,y,hp;
 	public int attack_cool = 10;
 	public int attack_cool_max;
-	public int move_pattern; // 0오른쪽으로만 1위로만 2오른쪽 위 대각선 3왼쪽 위 대각선 4왼쪽으로만 5 위로만(오른쪽에서 나옴)
+	public int move_pattern; 
 	public int value;
 	Enemy(int hp,int pattern,int cool_max){
 		this.hp=hp;move_pattern = pattern;attack_cool_max=cool_max;

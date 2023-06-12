@@ -46,7 +46,7 @@ public class ClassificationGame extends JPanel implements KeyListener, Runnable 
     
     //내부에서 사용하는 스코어 변수
     int score = 0;
-    int timeLeft = 30; // 게임 시간 (초)
+    int timeRemaining = 30; // 게임 시간 (초)
     CSV_manager CSV = new CSV_manager();
     
     public ClassificationGame() {
@@ -95,7 +95,7 @@ public class ClassificationGame extends JPanel implements KeyListener, Runnable 
         g.fillRect((screenWidth - 480) / 2, 0, 480, screenHeight);
         g.setColor(Color.WHITE);
         g.drawString("Score : " + Integer.toString(score), (screenWidth - 100) / 2, 100);
-        g.drawString("Time Left : " + Integer.toString(timeLeft), (screenWidth - 100) / 2, 120);
+        g.drawString("Time Left : " + Integer.toString(timeRemaining), (screenWidth - 100) / 2, 120);
 
         int i = 0;
         for (int element : queue) {
@@ -164,30 +164,30 @@ public class ClassificationGame extends JPanel implements KeyListener, Runnable 
         // Not used
     }
 
-
+    // 타이머 감소를 위한 runnable run
     @Override
     public void run() {
-        while (timeLeft > 0) {
+        while (timeRemaining > 0) {
             try {
-                // Delay for 1 second
+                // 1초대기
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
-            // Decrease the time left
-            timeLeft--;
+            timeRemaining--;
             if(already_exit)
             	return;
-            // Repaint the panel to update the time left
+            // Repaint 패널 다시그리기(시간초 줄어드는 용)
             repaint();
         }
         if(already_exit == false) {
-        CSV.CSV_Write("Classify",Integer.toString(score));
-        // Game over logic here
-        System.out.println("Game Over");
-        frame.dispose();
-        new Kiosk.GameOver("Score : "+Integer.toString(score));
+        	// CSV로 점수 추가
+	        CSV.CSV_Write("Classify",Integer.toString(score));
+	        // Game over logic here
+	        // System.out.println("Game Over");
+	        frame.dispose();
+	        new Kiosk.GameOver("Score : "+Integer.toString(score));
         }
     }
 }

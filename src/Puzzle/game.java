@@ -148,124 +148,120 @@ class MainFrame extends JFrame implements MouseListener, Runnable {
 	}
 
 	public void run() {
-
 		while (true) {
+			try {
 
-		try {
+				repaint();
 
-		repaint();
+				TimeCheck();
 
-		TimeCheck();
-
-		Thread.sleep(15);
-		//무한스레드돌리기
-		} catch (Exception e) {
+				Thread.sleep(15);
+				//무한스레드돌리기
+			} catch (Exception e) {
+			}
 		}
-		}
-		}
-		public void TimeCheck() {
+	}
+	
+	public void TimeCheck() {
 
 		if (time_run) {
 
-		current_time = System.currentTimeMillis();
+			current_time = System.currentTimeMillis();
 
-		actual_time = current_time - start_time;
-		//게임시작버튼을눌렀을때의시간값과
-		//실제시간값으로게임진행시간계산.
+			actual_time = current_time - start_time;
+			//게임시작버튼을눌렀을때의시간값과
+			//실제시간값으로게임진행시간계산.
 
-		sc.countDown((int) actual_time / 1000);
+			sc.countDown((int) actual_time / 1000);
+	
+			//카운트다운표시용시간값전송
+			if (!sc.game_start && sc.check <= 30) {
+	
+				//게임세팅완료후게임시작되면게임진행시간갱신
+		
+				show_time = time_format.format(actual_time - 32403000);
+		
+				lb_time.setText(show_time);
 
-		//카운트다운표시용시간값전송
-		if (!sc.game_start && sc.check <= 30) {
-
-		//게임세팅완료후게임시작되면게임진행시간갱신
-
-		show_time = time_format.format(actual_time - 32403000);
-
-		lb_time.setText(show_time);
-
-	    }	
+			}	
 		}
 		if ( sc.check > 30){
 
 			sc.ClearTime(lb_time.getText());
-			if(write_token == false) 
-			{
+			if(write_token == false) {
 				write_token = true;
 				CSV.CSV_Write("Puzzle", lb_time.getText());
 			}
 			//숫자30까지클릭이끝나면게임클리어메세지띄울준비
-			
-			}
-			}
+		}
+	}
 	
-			public void mouseClicked(MouseEvent e) {
+	public void mouseClicked(MouseEvent e) {
 
-			if (e.getSource() == bt_start) {
-			//게임시작버튼
+		if (e.getSource() == bt_start) {
+		//게임시작버튼
 			if (!time_run && !sc.game_start ) {
-			write_token = false;
-			start_time = System.currentTimeMillis();
-			//시작버튼눌렀을시시간값받기
-			sc.rect_select.clear();
-
-			time_run = true;
-
-			sc.gameStart(true);
-			record = false;
-			//게임및시간세팅
-			//System.out.println("start");
-			}
-			} else if (e.getSource() == bt_reset) {
-
-				//게임초기화버튼
-				
-				record = false;
-				start_time = 0;
-				lb_time.setText("00:00:00.000");
+				write_token = false;
+				start_time = System.currentTimeMillis();
+				//시작버튼눌렀을시시간값받기
 				sc.rect_select.clear();
-				sc.countDown(0);
-				time_run = false;
-				sc.gameStart(false);
-				sc.check = 0;
-				//게임초기화
-				//System.out.println("reset");
-				}
-			else if (e.getSource() == bt_record) {
-				new Kiosk.Main_Frame();
-		        dispose();
+		
+				time_run = true;
+		
+				sc.gameStart(true);
+				record = false;
+				//게임및시간세팅
+				//System.out.println("start");
 			}
-			}
+		} else if (e.getSource() == bt_reset) {
+
+			//게임초기화버튼
 			
-			private static String loadFromFile() throws IOException {
-		        String filePath = "날불러와.txt"; // 불러올 파일 경로와 파일명 지정
-		        StringBuilder sb = new StringBuilder();
+			record = false;
+			start_time = 0;
+			lb_time.setText("00:00:00.000");
+			sc.rect_select.clear();
+			sc.countDown(0);
+			time_run = false;
+			sc.gameStart(false);
+			sc.check = 0;
+			//게임초기화
+			//System.out.println("reset");
+		} else if (e.getSource() == bt_record) {
+			new Kiosk.Main_Frame();
+	        dispose();
+		}
+	}
+			
+	private static String loadFromFile() throws IOException {
+        String filePath = "날불러와.txt"; // 불러올 파일 경로와 파일명 지정
+        StringBuilder sb = new StringBuilder();
 
-		        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-		            String line;
-		            while ((line = reader.readLine()) != null) {
-		                sb.append(line);
-		                sb.append("\n");
-		            }
-		        }
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+                sb.append("\n");
+            }
+        }
 
-		        return sb.toString();
-		    }
+        return sb.toString();
+    }
 			
 				
 			
-				public void mousePressed(MouseEvent e) {}
+	public void mousePressed(MouseEvent e) {}
 
-				public void mouseReleased(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) {}
 
-				public void mouseEntered(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {}
 
-				public void mouseExited(MouseEvent e) {}
-
-
+	public void mouseExited(MouseEvent e) {}
 
 
-				}
+
+
+}
 				
 
 class ImagePanel extends JPanel implements MouseListener {
@@ -297,9 +293,7 @@ class ImagePanel extends JPanel implements MouseListener {
 	//숫자보관용객체클래스접근키
 
 	ImagePanel() {
-
-	this.addMouseListener(this);
-
+		this.addMouseListener(this);
 	}
 	public void countDown(int count) {
 		//게임시간값을받아와카운트다운표시

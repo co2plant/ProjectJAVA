@@ -32,7 +32,7 @@ public class Jframe extends JFrame implements KeyListener, Runnable {
 	Image character;
 	Image gray;
 	Image enemy_bullet;
-	Image enemy; //占쎌읅 占쎈늄嚥≪뮉�꽅占쏙옙占쎌뿯
+	Image enemy;
 	Image guide;
 	Image bullet_image;
 	Image main_logo;
@@ -66,9 +66,9 @@ public class Jframe extends JFrame implements KeyListener, Runnable {
 	Dimension screen = tk.getScreenSize();
 	int f_xpos = (int)(screen.getWidth() / 2 - width / 2);
 	int f_ypos = (int)(screen.getHeight() / 2 - height / 2);
-	setUndecorated(true);//占쏙옙占쎌뵠占쏙옙獄쏉옙 占쎈씨占쎈막占쎈뮉椰꾬옙
-	setLocation(f_xpos, f_ypos);//占쎌맊占쎈즲占쎌뒭筌∽옙 餓λ쵐釉곤옙肉� 占쎄문占쎄쉐
-	setResizable(false);//占쎄텢占쎌뵠筌앾옙 鈺곌퀣�쟿 �겫�뜃占쏙옙�뮟
+	setUndecorated(true);
+	setLocation(f_xpos, f_ypos);
+	setResizable(false);
 	setVisible(true);
 	
 	}
@@ -156,8 +156,8 @@ public class Jframe extends JFrame implements KeyListener, Runnable {
 	}catch (Exception e){}
 	}
 
-	
-	//�솮占�
+
+
 	public void paint(Graphics g){
 	buffImage = createImage(width, height); 
 	buffg = buffImage.getGraphics(); 
@@ -282,7 +282,7 @@ public class Jframe extends JFrame implements KeyListener, Runnable {
 		}
 	}
 
-	public void keyPressed(KeyEvent e){ // 占쎄텕 占쎈땭占쏙옙占쎌뱽占쎈르
+	public void keyPressed(KeyEvent e){
 	switch(e.getKeyCode()){
 	case KeyEvent.VK_UP :
 	Key_Up = true;
@@ -314,7 +314,7 @@ public class Jframe extends JFrame implements KeyListener, Runnable {
 			
 		}
 	break;
-	case 0x5A: // Z占쎄텕
+	case 0x5A: // Z
 		Key_Z = true;
 		if(Main_class.scene_number == Main_class.scene_main && Key_Z == true) {
 			start_cool = 5;
@@ -329,7 +329,7 @@ public class Jframe extends JFrame implements KeyListener, Runnable {
 	break;
 	}
 	}
-	public void keyReleased(KeyEvent e){ //占쎄텕 占쎈막占쎌뱽占쎈르
+	public void keyReleased(KeyEvent e){ 
 	switch(e.getKeyCode()){
 	case KeyEvent.VK_UP :
 	Key_Up = false;
@@ -343,12 +343,12 @@ public class Jframe extends JFrame implements KeyListener, Runnable {
 	case KeyEvent.VK_RIGHT :
 	Key_Right = false;
 	break;
-	case 0x5A: // Z占쎄텕
+	case 0x5A: // Z
 		Key_Z = false;
 	break;
 	}
 	}
-	public void keyTyped(KeyEvent e){} // 占쎈쿈占쎌뵬占쏙옙 占쎈씨占쎈뮉占쎈쑓 占쎈씨占쎌몵筌롳옙 占쎌궎�몴�꼷源�繹먲옙
+	public void keyTyped(KeyEvent e){} 
 	public void KeyProcess(){
 		
 		if(Main_class.scene_number == Main_class.scene_game && Main_class.menu_open == true && Key_Z == true) {
@@ -445,7 +445,7 @@ public class Jframe extends JFrame implements KeyListener, Runnable {
 		}
 	}
 
-	public boolean crash(int x1, int y1, int x2, int y2, int w1, int h1, int w2, int h2){  // �빊�뫖猷� 筌ｋ똾寃�
+	public boolean crash(int x1, int y1, int x2, int y2, int w1, int h1, int w2, int h2){  
 		boolean check = false;
 		if ( Math.abs( ( x1 + w1 / 2 )  - ( x2 + w2 / 2 ))  <  ( w2 / 2 + w1 / 2 )  
 		&& Math.abs( ( y1 + h1 / 2 )  - ( y2 + h2 / 2 ))  <  ( h2 / 2 + h1/ 2 ) ){
