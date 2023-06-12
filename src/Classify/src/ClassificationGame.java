@@ -169,7 +169,7 @@ public class ClassificationGame extends JPanel implements KeyListener, Runnable 
         // Game over logic here
         System.out.println("Game Over");
         frame.dispose();
-        new Kiosk.GameOver(Integer.toString(score));
+        new Kiosk.GameOver("Score : "+Integer.toString(score));
         }
     }
 }

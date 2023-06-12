@@ -106,7 +106,7 @@ public class Jframe extends JFrame implements KeyListener, Runnable {
 
 	public void run(){ 
 	try{ 
-	while(true){
+	while(is_game_over == false){
 	KeyProcess(); 
 	repaint();
 	if(Main_class.scene_number == Main_class.scene_main || Main_class.menu_open == true) {
@@ -167,6 +167,7 @@ public class Jframe extends JFrame implements KeyListener, Runnable {
 
 	
 	public void update(Graphics g){
+		if(is_game_over == false) {
 		Draw_test();
 		if(Main_class.scene_number == Main_class.scene_game && start_cool == 0)
 			Draw_bullet();
@@ -180,7 +181,7 @@ public class Jframe extends JFrame implements KeyListener, Runnable {
 		if(Main_class.scene_number == Main_class.scene_game && is_game_over == false)
 			Draw_text();
 		g.drawImage(buffImage, 0, 0, this); 
-		
+		}
 		}
 
 	public void Draw_over() {
@@ -271,11 +272,11 @@ public class Jframe extends JFrame implements KeyListener, Runnable {
 				enemy_bullet_List.remove(i);
 				if(player.money <= 0 && is_game_over == false) {
 					CSV.CSV_Write("Shooting", Integer.toString(Score));
-					dispose();
-					new GameOver(Integer.toString(Score));
+					scene_change(Main_class.scene_main);
 					is_game_over = true;
-					Main_class.menu_open = true;
 					game_over_cool = 30;
+					dispose();
+					new GameOver("Score : "+Integer.toString(Score));
 				}
 			}
 		}

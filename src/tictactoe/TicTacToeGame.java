@@ -1,5 +1,8 @@
 package tictactoe;
 import javax.swing.*;
+
+import Kiosk.GameOver;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -130,7 +133,8 @@ public class TicTacToeGame extends JFrame implements ActionListener{
                     } else {
                         winner = "No winner";
                     }
-                    resultLabel.setText("The final Winner: " + winner);
+                    dispose();
+					new GameOver(winner+" HAS WON!!");
                 }
 
                 resetGame();

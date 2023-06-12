@@ -47,8 +47,8 @@ public class GameOver extends JFrame implements KeyListener{
     	frame.addKeyListener(this);
     	frame.pack();
         frame.setLocationRelativeTo(null);
-        JLabel record = new JLabel("Score : "+score);
-		record.setBounds(width_center-75, 100, 1000,1000);
+        JLabel record = new JLabel(score);
+		record.setBounds(width_center-100, 100, 1000,1000);
 		record.setFont(neo);
 		frame.add(record);
         frame.setVisible(true);

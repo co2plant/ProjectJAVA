@@ -130,7 +130,7 @@ public class PingPongGame extends JFrame implements ActionListener {
         	player2Score = 0;
         	already_exit = true;
             dispose();
-            new GameOver(Integer.toString(player1Score));
+            new GameOver("Score : "+Integer.toString(player1Score));
         }
 
         if (ballY >= HEIGHT - BALL_SIZE || ballY <= 0) {
