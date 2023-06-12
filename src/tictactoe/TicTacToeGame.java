@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Random;
 
 public class TicTacToeGame extends JFrame implements ActionListener{
 	private static final long serialVersionUID = 1L;
@@ -28,6 +29,8 @@ public class TicTacToeGame extends JFrame implements ActionListener{
     private final int height = 700;
     Toolkit tk = Toolkit.getDefaultToolkit();
 
+    private Random random;  // 추가(수정) 코드
+ 
     public TicTacToeGame() {
         setTitle("Tic Tac Toe");
         //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -110,7 +113,7 @@ public class TicTacToeGame extends JFrame implements ActionListener{
             }
         }
 
-        // 정상 수행인 경우 수행되는 내요
+        // 정상 수행인 경우 수행되는 내용
         if (isValidMove(row, col)) {
             makeMove(row, col);
             button.setText(Character.toString(currentPlayer));
@@ -144,9 +147,58 @@ public class TicTacToeGame extends JFrame implements ActionListener{
             } else {
                 currentPlayer = (currentPlayer == 'O') ? 'X' : 'O';
                 turnLabel.setText("Player " + currentPlayer + "'s turn");
+                
+                if (currentPlayer == 'X') {
+                    makeComputerMove(); // 추가 코드: 컴퓨터의 움직임 처리
+                }
             }
         } else {
             JOptionPane.showMessageDialog(this, "잘못된 선택입니다. 다시 클릭해주세요.");
+        }
+    }
+    
+    // 추가 코드
+    private void makeComputerMove() {
+    	boolean moveMade = false;
+    	random = new Random(); 
+        while (!moveMade) {
+            int row = random.nextInt(3);
+            int col = random.nextInt(3);
+            if (isValidMove(row, col)) {
+                makeMove(row, col);
+                buttons[row][col].setText(Character.toString(currentPlayer));
+                buttons[row][col].setForeground(getPlayerColor(currentPlayer));
+                moveMade = true;
+                if (isWinner()) {
+                    if (currentPlayer == 'O') {
+                        scoreO++;
+                    } else {
+                        scoreX++;
+                    }
+                    gameCount++;
+                    updateScoreLabel();
+
+                    if (gameCount == 3) {
+                        String winner;
+                        if (scoreO > scoreX) {
+                            winner = "Player O";
+                        } else if (scoreX > scoreO) {
+                            winner = "Player X";
+                        } else {
+                            winner = "No winner";
+                        }
+                        resultLabel.setText("The final Winner: " + winner);
+                    }
+
+                    resetGame();
+                } else if (isBoardFull()) {
+                    JOptionPane.showMessageDialog(this, "It's a draw!");
+                    resetGame();
+                } else {
+                    currentPlayer = (currentPlayer == 'O') ? 'X' : 'O';
+                    turnLabel.setText("Player " + currentPlayer + "'s turn");
+                }
+            }
         }
     }
 

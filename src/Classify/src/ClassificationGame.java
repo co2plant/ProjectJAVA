@@ -1,11 +1,12 @@
 package Classify.src;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import Kiosk.CSV_manager;
 import Kiosk.Main_Frame;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JButton;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -13,32 +14,48 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
 import java.util.LinkedList;
 import java.util.Queue;
+
+//Author : co2plant
 
 public class ClassificationGame extends JPanel implements KeyListener, Runnable {
      Queue<Integer> queue = new LinkedList<Integer>(); // 0 RED 1 BLUE
 
     Toolkit toolkit = Toolkit.getDefaultToolkit();
+    
+    //이미지 불러오기 점수를 취합하는 메인프레임과 다르게 툴킷을 사용함(메인은 이미지 아이콘)
     Image bulletImage = toolkit.getImage("src/Classify/img/LEFT.png");
     Image scopeImage = toolkit.getImage("src/Classify/img/RIGHT.png");
-    Image gameoverImage = toolkit.getImage("src/Classify/img/GAMEOVER.png");
+    //게임오버 이미지였으나 게임오버 클래스를 따로 생성 하므로 제거함.
+    //Image gameoverImage = toolkit.getImage("src/Classify/img/GAMEOVER.png");
+    
 
-    private JButton leftButton;
-    private JButton rightButton;
-    private boolean already_exit = false;
-    final int screenWidth = 1280;
-    final int screenHeight = 720;
+    //private JButton leftButton;
+    //private JButton rightButton;
+    
+    //프레임
     private JFrame frame;
-     int score = 0;
+    //프레임 크기 조절용 Define
+    static final int screenWidth = 1280;
+    static final int screenHeight = 720;
+    
+    //
+    private boolean already_exit = false;
+    
+    //내부에서 사용하는 스코어 변수
+    int score = 0;
     int timeLeft = 30; // 게임 시간 (초)
     CSV_manager CSV = new CSV_manager();
+    
     public ClassificationGame() {
         setPreferredSize(new Dimension(screenWidth, screenHeight));
         setBackground(Color.WHITE);
         setFocusable(true);
         addKeyListener(this);
         
+        //카드 
         for (int i = 0; i < 7; i++)
             queue.add((int) (Math.random() * 100));
 
@@ -48,6 +65,7 @@ public class ClassificationGame extends JPanel implements KeyListener, Runnable 
         frame.setResizable(false);
 
         // button initialize
+        // Graphic갱신 시 버튼이 사라지며 버튼 이벤트 리스너 등록 시 키보드 갱신이 안되는 버그가 있어서 수
         /*
         leftButton = new JButton("RED");
         rightButton = new JButton("BLUE");
